@@ -3,7 +3,7 @@
 
 
 TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), std::string());
+    EXPECT_EQ(generateSoundex(""), "\0");
 }
 
 TEST(SoundexTest, HandlesSingleCharacter) {
