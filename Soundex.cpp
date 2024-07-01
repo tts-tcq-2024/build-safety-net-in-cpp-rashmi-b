@@ -26,6 +26,13 @@ std::string checkEmptyString(const std::string& name) {
     if (name.empty()) return "";
 }
 
+std::string checkSoundexLength(std::string soundex) {
+    while (soundex.length() < 4) {
+        soundex += '0';
+    }
+    return soundex;
+}
+
 std::string generateSoundex(const std::string& name) {
     
     checkEmptyString(name);
@@ -40,10 +47,5 @@ std::string generateSoundex(const std::string& name) {
             prevCode = code;
         }
     }
-
-    // while (soundex.length() < 4) {
-    //     soundex += '0';
-    // }
-
-    return soundex;
+    checkSoundexLength(soundex);
 }
