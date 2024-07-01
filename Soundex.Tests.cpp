@@ -3,7 +3,7 @@
 
 
 TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), IsEmpty());
+    EXPECT_EQ(generateSoundex("").IsEmpty());
 }
 
 TEST(SoundexTest, HandlesSingleCharacter) {
