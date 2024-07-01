@@ -3,7 +3,7 @@
 
 
 TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), "\0");
+    EXPECT_EQ(generateSoundex(""), "");
 }
 
 TEST(SoundexTest, HandlesSingleCharacter) {

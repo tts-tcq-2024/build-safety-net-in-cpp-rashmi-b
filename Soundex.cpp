@@ -23,7 +23,7 @@ char getSoundexCode(char c) {
 }
 
 std::string checkEmptyString(const std::string& name) {
-    if (name.empty()) return "\0";
+    if (name.empty()) return "";
 }
 
 std::string checkSoundexLength(std::string soundex) {
