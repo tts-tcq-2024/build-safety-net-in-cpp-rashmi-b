@@ -22,8 +22,8 @@ char getSoundexCode(char c) {
     }
 }
 
-std::string checkEmptyString(const std::string& name) {
-    if (name.empty()) return std::string();
+std::string checkEmptyString(std::string soundex, const std::string& name) {
+    if (name.empty()) return soundex = std::string();
 }
 
 std::string checkSoundexLength(std::string soundex) {
@@ -39,9 +39,10 @@ std::string checkCode(char code, std::string soundex, char prevCode) {
 
 std::string generateSoundex(const std::string& name) {
     
-    checkEmptyString(name);
     // save first letter of name to code
     std::string soundex(1, toupper(name[0]));
+    checkEmptyString(soundex, name);
+    
     char prevCode = getSoundexCode(name[0]);
 
     for (size_t i = 1; i < name.length() && soundex.length() < 4; ++i) {
