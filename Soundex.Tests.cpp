@@ -9,8 +9,8 @@ TEST(SoundexTest, HandlesEmptyString) {
 }
 
 TEST(SoundexTest, HandlesSingleCharacter) {
-    std::string value = std::string("A");
+    std::string value = generateSoundex(std::string s("A"));
     std::string expectedValue = std::string("A000");
-    ASSERT_EQ(generateSoundex(value), expectedValue);
+    ASSERT_EQ(value, expectedValue);
 }
 
