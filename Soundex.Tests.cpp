@@ -15,3 +15,17 @@ TEST(SoundexTest, HandlesSingleCharacter) {
     ASSERT_EQ(value, expectedValue);
 }
 
+TEST(SoundexTest, HandlesDoubleCharacter) {
+    std::string s = "Aaaa";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("A000");
+    ASSERT_EQ(value, expectedValue);
+}
+
+TEST(SoundexTest, HandlesMultipleCharacter) {
+    std::string s = "Robert";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("R163");
+    ASSERT_EQ(value, expectedValue);
+}
+
