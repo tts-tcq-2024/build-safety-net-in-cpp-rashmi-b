@@ -40,7 +40,7 @@ std::string checkSoundexLength(const std::string& name, std::string& soundex) {
 }
 
 std::string checkCode(char code, std::string& soundex, char prevCode) {
-    if (code != '0' && code != prevCode) {return std::string(soundex += code;)}
+    if (code != '0' && code != prevCode) {return soundex += code;}
 }
 
 std::string generateSoundex(const std::string& name) {
