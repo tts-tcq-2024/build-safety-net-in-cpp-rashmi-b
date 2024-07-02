@@ -24,7 +24,7 @@ char getSoundexCode(char c) {
 
 std::string checkEmptyString(const std::string& name, std::string soundex) {
     if (name.empty()){
-        return soundex = std::string();
+        return soundex = {};
     } else {
         return 0;
     }
