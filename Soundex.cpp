@@ -47,7 +47,7 @@ std::string generateSoundex(const std::string& name) {
     
     // save first letter of name to code
     std::string soundex(1, toupper(name[0]));
-    checkEmptyString(name. soundex);
+    checkEmptyString(name, soundex);
 
     checkSoundexLength(name, soundex);
 
