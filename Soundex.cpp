@@ -33,8 +33,10 @@ std::string checkEmptyString(const std::string& name, std::string& soundex) {
 }
 
 std::string checkSoundexLength(const std::string& name, std::string& soundex) {
+    int i = 1;
     while (name.length() < 4) {
-        soundex += '0';
+        soundex[i] += '0';
+        i++;
     }
     return std::string(soundex);
 }
@@ -56,5 +58,5 @@ std::string generateSoundex(const std::string& name) {
         char code = getSoundexCode(name[i]);
         soundex = checkCode(code, soundex, prevCode);
     }
-    return std::string(soundex);
+    //return std::string(soundex);
 }
