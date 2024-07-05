@@ -33,10 +33,8 @@ std::string checkEmptyString(const std::string& name, std::string& soundex) {
 }
 
 std::string checkSoundexLength(const std::string& name, std::string& soundex) {
-    if (name.length() < 4) {
-        soundex[1] = '0';
-        soundex[2] = '0';
-        soundex[3] = '0';
+    while (name.length() < 4) {
+        soundex += '0';
     }
     return std::string(soundex);
 }
