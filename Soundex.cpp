@@ -29,20 +29,35 @@ std::string checkEmptyString(const std::string& name) {
     }
 }
 
-std::string checkSoundexLength(std::string& soundex) {
-    std::string newSoundex = soundex;
-    newSoundex.resize(4, '0');
-    return std::string(newSoundex);
+std::string checkSoundexLength(const std::string& soundex) {
+    std::string paddedSoundex = soundex;
+    paddedSoundex.resize(4, '0'); // Pad with '0' if soundex is less than 4 characters
+    return paddedSoundex;
 }
 
-// Function to determine if a character is 'H' or 'W'
-bool isCharHW(char c) {
-    return c == 'h' || c == 'w';
+bool checkCode(char code, char prevCode) {
+    return (code != '0' && code != prevCode);
+
 }
 
-bool checkCode(char code, char prevCode, char c) {
-    return (code != '0' && code != prevCode) || isCharHW(c);
+void appendCode(std::string& result, char code, char& prevCode, size_t& length) {
+    result += (code != '0' && checkCode(code, prevCode)) ? (prevCode = code, code) : '0';
+    length++;
+}
 
+std::string AccumulateSoundex(const std::string& soundex, const std::string& name, char prevCode) {
+    std::string result = soundex.substr(0, 1); // Initialize result with the first character of soundex
+    size_t length = 1;
+
+    for (char c : name.substr(1)) {
+        if (length >= 4) break; // Exit early if result already has 4 characters
+
+        char code = getSoundexCode(c);
+        appendCode(result, code, prevCode, length);
+    }
+
+    result.append(4 - result.length(), '0'); // Pad with '0' if result is less than 4 characters
+    return result.substr(0, 4); // Ensure the result is exactly 4 characters long
 }
 
 std::string generateSoundex(const std::string& name) {
@@ -52,17 +67,6 @@ std::string generateSoundex(const std::string& name) {
 
     std::string soundex(1, toupper(name[0]));
     char prevCode = getSoundexCode(name[0]);
-    checkSoundexLength(soundex);
 
-    return std::accumulate(name.begin() + 1, name.end(), std::move(soundex),
-        [&prevCode](std::string& accumulatedCode, char c) {
-            char code = getSoundexCode(c);
-            if (checkCode(code, prevCode, c)) {
-                accumulatedCode += code;
-                prevCode = code;
-            }
-            return accumulatedCode;
-        });
-
-    return checkSoundexLength(soundex);
+    return AccumulateSoundex(soundex, name, prevCode);
 }
