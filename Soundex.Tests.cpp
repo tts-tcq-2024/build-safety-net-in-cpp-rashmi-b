@@ -3,8 +3,8 @@
 
 
 TEST(SoundexTest, HandlesEmptyString) {
-    std::string actualValue = std::string();
-    std::string expectedValue = std::string();
+    std::string actualValue = "";
+    std::string expectedValue = "";
     EXPECT_EQ(generateSoundex(actualValue), expectedValue);
 }
 
@@ -16,7 +16,7 @@ TEST(SoundexTest, HandlesSingleCharacter) {
 }
 
 TEST(SoundexTest, HandlesDoubleCharacter) {
-    std::string s = "Aaaa";
+    std::string s = "AAAA";
     std::string value = generateSoundex(s);
     std::string expectedValue = std::string("A000");
     EXPECT_EQ(value, expectedValue);
