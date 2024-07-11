@@ -3,10 +3,42 @@
 
 
 TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), "");
+    std::string actualValue = "";
+    std::string expectedValue = "";
+    EXPECT_EQ(generateSoundex(actualValue), expectedValue);
 }
 
 TEST(SoundexTest, HandlesSingleCharacter) {
-    EXPECT_EQ(generateSoundex("A"), "A000");
+    std::string s = "A";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("A000");
+    EXPECT_EQ(value, expectedValue);
 }
 
+TEST(SoundexTest, HandlesDoubleCharacter) {
+    std::string s = "AAAA";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("A000");
+    EXPECT_EQ(value, expectedValue);
+}
+
+TEST(SoundexTest, HandlesMultipleCharacter) {
+    std::string s = "Robert";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("R010");
+    EXPECT_EQ(value, expectedValue);
+}
+
+TEST(SoundexTest, HandlesNonAlphabeticCharacters) {
+    std::string s = "Hew698";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("H000");
+    EXPECT_EQ(value, expectedValue);
+}
+
+TEST(SoundexTest, HandlesAllVowels) {
+    std::string s = "aeiou";
+    std::string value = generateSoundex(s);
+    std::string expectedValue = std::string("A000");
+    EXPECT_EQ(value, expectedValue);
+}

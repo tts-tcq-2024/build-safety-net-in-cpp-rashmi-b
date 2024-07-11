@@ -1,36 +1,65 @@
 #include "Soundex.h"
 #include <cctype>
+#include <map>
+#include <numeric>
+
+//Declare and define Map here globally
+std::map<char,char> charMap = { {'B','1'}, {'F','1'}, {'P','1'}, {'V','1'},
+                        {'C','2'}, {'G','2'}, {'J','2'}, {'K','2'}, {'Q','2'}, {'S','2'}, {'X','2'}, {'Z','2'},
+                        {'D','3'}, {'T','3'},
+                        {'L','4'},
+                        {'M','5'}, {'N','5'},
+                        {'R','6'},
+                        {'A','0'}, {'E','0'}, {'I','0'}, {'O','0'}, {'U','0'}, {'H','0'}, {'W','0'}, {'Y','0'}
+                        };
 
 char getSoundexCode(char c) {
     c = toupper(c);
-    switch (c) {
-        case 'B': case 'F': case 'P': case 'V': return '1';
-        case 'C': case 'G': case 'J': case 'K': case 'Q': case 'S': case 'X': case 'Z': return '2';
-        case 'D': case 'T': return '3';
-        case 'L': return '4';
-        case 'M': case 'N': return '5';
-        case 'R': return '6';
-        default: return '0'; // For A, E, I, O, U, H, W, Y
+    auto it = charMap.find(c);
+    // return Map consonants to digits
+    if (it != charMap.end()) {
+        return it->second;
     }
+    return '0'; // Default case
+}
+
+std::string checkSoundexLength(const std::string& soundex) {
+    std::string paddedSoundex = soundex;
+    paddedSoundex.resize(4, '0'); // Pad with '0' if soundex is less than 4 characters
+    return paddedSoundex;
+}
+
+bool checkCode(char code, char prevCode) {
+    return (code != '0' && code != prevCode);
+
+}
+
+void appendCode(std::string& result, char code, char& prevCode, size_t& length) {
+    result += (code != '0' && checkCode(code, prevCode)) ? (prevCode = code, code) : '0';
+    length++;
+}
+
+std::string accumulateSoundex(const std::string& soundex, const std::string& name, char prevCode) {
+    std::string result = soundex.substr(0, 1); // Initialize result with the first character of soundex
+    size_t length = 1;
+
+    for (char c : name.substr(1)) {
+        if (length >= 4) break; // Exit early if result already has 4 characters
+
+        char code = getSoundexCode(c);
+        appendCode(result, code, prevCode, length);
+    }
+
+    result.append(4 - result.length(), '0'); // Pad with '0' if result is less than 4 characters
+    return result.substr(0, 4); // Ensure the result is exactly 4 characters long
 }
 
 std::string generateSoundex(const std::string& name) {
+    
     if (name.empty()) return "";
-
+    // save first letter of name to code
     std::string soundex(1, toupper(name[0]));
     char prevCode = getSoundexCode(name[0]);
 
-    for (size_t i = 1; i < name.length() && soundex.length() < 4; ++i) {
-        char code = getSoundexCode(name[i]);
-        if (code != '0' && code != prevCode) {
-            soundex += code;
-            prevCode = code;
-        }
-    }
-
-    while (soundex.length() < 4) {
-        soundex += '0';
-    }
-
-    return soundex;
+    return accumulateSoundex(soundex, name, prevCode);
 }
