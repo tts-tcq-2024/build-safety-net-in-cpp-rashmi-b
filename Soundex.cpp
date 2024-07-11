@@ -1,6 +1,7 @@
 #include "Soundex.h"
 #include <cctype>
 #include <map>
+#include <numeric>
 
 //Declare and define Map here globally
 std::map<char,char> charMap = { {'B','1'}, {'F','1'}, {'P','1'}, {'V','1'},
@@ -14,49 +15,54 @@ std::map<char,char> charMap = { {'B','1'}, {'F','1'}, {'P','1'}, {'V','1'},
 
 char getSoundexCode(char c) {
     c = toupper(c);
+    auto it = charMap.find(c);
     // return Map consonants to digits
-    for (auto charValue : charMap) // Look at each key-value pair
-    {
-        if (charValue.first == c)
-        {
-            return charValue.second;
-        }
+    if (it != charMap.end()) {
+        return it->second;
     }
+    return '0'; // Default case
 }
 
-std::string checkEmptyString(const std::string& name, std::string& soundex) {
+std::string checkEmptyString(const std::string& name) {
     if (name.empty()){
-        return std::string(soundex = {});
-    } else {
-        return "Name not empty";
+        return "0000";
     }
 }
 
-std::string checkSoundexLength(const std::string& name, std::string& soundex) {
-    if (name.length() < 4) {
-        soundex[1] = '0';
-        soundex[2] = '0';
-        soundex[3] = '0';
-    }
-    return std::string(soundex);
+std::string checkSoundexLength(std::string& soundex) {
+    std::string newSoundex = soundex;
+    newSoundex.resize(4, '0');
+    return std::string(newSoundex);
 }
 
-std::string checkCode(char code, std::string& soundex, char prevCode) {
-    if (code != '0' && code != prevCode) {return soundex += code;}
+// Function to determine if a character is 'H' or 'W'
+bool isCharHW(char c) {
+    return c == 'h' || c == 'w';
+}
+
+bool checkCode(char code, char prevCode, char c) {
+    return (code != '0' && code != prevCode) || isCharHW(c);
+
 }
 
 std::string generateSoundex(const std::string& name) {
     
     // save first letter of name to code
+    checkEmptyString(name);
+
     std::string soundex(1, toupper(name[0]));
-    checkEmptyString(name, soundex);
-
-    checkSoundexLength(name, soundex);
-
     char prevCode = getSoundexCode(name[0]);
-    for (size_t i = 1; i < name.length() && soundex.length() < 4; ++i) {
-        char code = getSoundexCode(name[i]);
-        soundex = checkCode(code, soundex, prevCode);
-    }
-    return std::string(soundex);
+    checkSoundexLength(soundex);
+
+    return std::accumulate(name.begin() + 1, name.end(), std::move(soundex),
+        [&prevCode](std::string& accumulatedCode, char c) {
+            char code = getSoundexCode(c);
+            if (checkCode(code, prevCode, c)) {
+                accumulatedCode += code;
+                prevCode = code;
+            }
+            return accumulatedCode;
+        });
+
+    return checkSoundexLength(soundex);
 }
