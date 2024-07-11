@@ -23,12 +23,6 @@ char getSoundexCode(char c) {
     return '0'; // Default case
 }
 
-std::string checkEmptyString(const std::string& name) {
-    if (name.empty()){
-        return "";
-    }
-}
-
 std::string checkSoundexLength(const std::string& soundex) {
     std::string paddedSoundex = soundex;
     paddedSoundex.resize(4, '0'); // Pad with '0' if soundex is less than 4 characters
@@ -62,9 +56,8 @@ std::string accumulateSoundex(const std::string& soundex, const std::string& nam
 
 std::string generateSoundex(const std::string& name) {
     
+    if (name.empty()) return "";
     // save first letter of name to code
-    checkEmptyString(name);
-
     std::string soundex(1, toupper(name[0]));
     char prevCode = getSoundexCode(name[0]);
 
