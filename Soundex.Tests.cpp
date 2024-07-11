@@ -32,7 +32,7 @@ TEST(SoundexTest, HandlesMultipleCharacter) {
 TEST(SoundexTest, HandlesNonAlphabeticCharacters) {
     std::string s = "Hew698";
     std::string value = generateSoundex(s);
-    std::string expectedValue = std::string("0000");
+    std::string expectedValue = std::string("H000");
     EXPECT_EQ(value, expectedValue);
 }
 
