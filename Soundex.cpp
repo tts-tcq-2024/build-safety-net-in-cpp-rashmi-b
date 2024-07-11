@@ -25,7 +25,7 @@ char getSoundexCode(char c) {
 
 std::string checkEmptyString(const std::string& name) {
     if (name.empty()){
-        return "0000";
+        return "";
     }
 }
 
@@ -45,7 +45,7 @@ void appendCode(std::string& result, char code, char& prevCode, size_t& length) 
     length++;
 }
 
-std::string AccumulateSoundex(const std::string& soundex, const std::string& name, char prevCode) {
+std::string accumulateSoundex(const std::string& soundex, const std::string& name, char prevCode) {
     std::string result = soundex.substr(0, 1); // Initialize result with the first character of soundex
     size_t length = 1;
 
@@ -68,5 +68,5 @@ std::string generateSoundex(const std::string& name) {
     std::string soundex(1, toupper(name[0]));
     char prevCode = getSoundexCode(name[0]);
 
-    return AccumulateSoundex(soundex, name, prevCode);
+    return accumulateSoundex(soundex, name, prevCode);
 }
